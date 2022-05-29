@@ -83,7 +83,7 @@ def fill_sheet(canvas: Canvas, label_drawing: Drawing):
 if __name__ == '__main__':
 
     i = 0
-    with open('product_info.csv') as csv_file:
+    with open('product_info.csv', 'r', encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
         Data = namedtuple("Data", next(csv_reader))  # get names from column headers
         canvas = Canvas("label_sheets_with_barcodes-v2/ean-stickers.pdf",
