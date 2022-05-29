@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import csv
+import time
+import random
 from collections import namedtuple
 
 from reportlab.graphics import renderPDF
@@ -88,18 +90,19 @@ if __name__ == '__main__':
                             pagesize=PAGESIZE)
         for product_info in map(Data._make, csv_reader):
             
-
-            if len(product_info.EAN13) > 13:
-                print("EXITING: EAN code needs to be 13 digits long")
-                
-            else :
-
-                sticker = label(product_info.EAN13, product_info.product_name)
-                y = SHEET_TOP - LABEL_HEIGHT - i * LABEL_HEIGHT
-                renderPDF.draw(sticker, canvas, 0, y)
-                i += 1
-                if i > 7:
-                    canvas.showPage()
-                    i = 0
+            ean = product_info.EAN13
+            if len(product_info.EAN13) != 13:
+                print("GENERATING EAN code ")
+                ean = int(time.time() * 1000)*1000 + random.randint(0, 999)
+                ean = '20'+ str(ean)[-11:]
+                print(ean)
+            
+            sticker = label(ean, product_info.product_name)
+            y = SHEET_TOP - LABEL_HEIGHT - i * LABEL_HEIGHT
+            renderPDF.draw(sticker, canvas, 0, y)
+            i += 1
+            if i > 7:
+                canvas.showPage()
+                i = 0
             
         canvas.save()
